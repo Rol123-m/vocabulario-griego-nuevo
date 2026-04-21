@@ -1,0 +1,1943 @@
+```html
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Griego Koiné - Vivos para Servir</title>
+<style>
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.5/index.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/source-serif-4@5.0.5/index.css');
+
+:root {
+  --primary: #1e3a8a;
+  --primary-light: #3b82f6;
+  --primary-dark: #0f1f4d;
+  --gold: #d4a574;
+  --gold-light: #e8c9a0;
+  --accent: #f59e0b;
+  --success: #10b981;
+  --error: #ef4444;
+  --bg: #f0f4f8;
+  --bg-card: #ffffff;
+  --bg-secondary: #e2e8f0;
+  --text: #1a202c;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --border: #e2e8f0;
+  --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --bg-card: #1e293b;
+  --bg-secondary: #334155;
+  --text: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #334155;
+  --shadow: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -2px rgba(0,0,0,0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.4), 0 4px 6px -4px rgba(0,0,0,0.2);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.5), 0 8px 10px -6px rgba(0,0,0,0.3);
+  --primary: #60a5fa;
+  --primary-light: #93bbfd;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: var(--transition);
+  overflow-x: hidden;
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.header {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.logo-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.logo-text h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.logo-text span {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-btn {
+  background: var(--bg-secondary);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--text);
+  transition: var(--transition);
+}
+
+.header-btn:hover { background: var(--primary); color: white; }
+
+.xp-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #1a202c;
+}
+
+.streak-display {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-secondary);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.screen { display: none; animation: fadeIn 0.4s ease; }
+.screen.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-10px) rotate(0); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+.hero {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border-radius: var(--radius-xl);
+  padding: 32px 28px;
+  margin: 24px 0;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(212,165,116,0.2) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.hero h2 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.hero p {
+  opacity: 0.9;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  position: relative;
+}
+
+.hero-stat {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius);
+  padding: 14px;
+  text-align: center;
+}
+
+.hero-stat .number { font-size: 1.5rem; font-weight: 700; display: block; }
+.hero-stat .label { font-size: 0.75rem; opacity: 0.8; margin-top: 2px; }
+
+.section-title {
+  font-family: 'Source Serif 4', serif;
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.levels-grid { display: grid; gap: 14px; margin-bottom: 28px; }
+
+.level-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.level-card:hover {
+  border-color: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.level-card.locked { opacity: 0.5; cursor: not-allowed; }
+.level-card.locked:hover { transform: none; box-shadow: none; border-color: var(--border); }
+
+.level-icon {
+  width: 56px; height: 56px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; flex-shrink: 0;
+}
+
+.level-card:nth-child(1) .level-icon { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+.level-card:nth-child(2) .level-icon { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; }
+.level-card:nth-child(3) .level-icon { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; }
+
+.level-info { flex: 1; }
+.level-info h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+.level-info p { font-size: 0.85rem; color: var(--text-secondary); }
+
+.level-progress {
+  width: 100%; height: 6px; background: var(--bg-secondary);
+  border-radius: 3px; margin-top: 8px; overflow: hidden;
+}
+
+.level-progress-bar {
+  height: 100%; border-radius: 3px; transition: width 0.5s ease;
+}
+
+.level-card:nth-child(1) .level-progress-bar { background: #10b981; }
+.level-card:nth-child(2) .level-progress-bar { background: #3b82f6; }
+.level-card:nth-child(3) .level-progress-bar { background: #8b5cf6; }
+
+.level-badge {
+  background: var(--accent); color: white; padding: 4px 10px;
+  border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+}
+
+.modes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.mode-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+}
+
+.mode-card:hover {
+  border-color: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.mode-card .mode-icon {
+  width: 52px; height: 52px; margin: 0 auto 10px;
+  border-radius: 14px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+}
+
+.mode-card:nth-child(1) .mode-icon { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+.mode-card:nth-child(2) .mode-icon { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
+.mode-card:nth-child(3) .mode-icon { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+.mode-card:nth-child(4) .mode-icon { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+.mode-card:nth-child(5) .mode-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; }
+
+.mode-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+.mode-card p { font-size: 0.75rem; color: var(--text-secondary); }
+
+/* Flashcard */
+.flashcard-container { display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
+.flashcard-progress { width: 100%; max-width: 500px; margin-bottom: 20px; text-align: center; }
+.flashcard-progress-text { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; }
+
+.flashcard-progress-bar {
+  width: 100%; height: 8px; background: var(--bg-secondary);
+  border-radius: 4px; overflow: hidden;
+}
+
+.flashcard-progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  border-radius: 4px; transition: width 0.3s ease;
+}
+
+.flashcard-wrapper {
+  perspective: 1000px; width: 100%; max-width: 500px;
+  height: 300px; margin-bottom: 24px; cursor: pointer;
+}
+
+.flashcard {
+  width: 100%; height: 100%; position: relative;
+  transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flashcard.flipped { transform: rotateY(180deg); }
+
+.flashcard-face {
+  position: absolute; width: 100%; height: 100%;
+  backface-visibility: hidden; border-radius: var(--radius-xl);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px;
+  box-shadow: var(--shadow-xl);
+}
+
+.flashcard-front { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; }
+.flashcard-back { background: var(--bg-card); transform: rotateY(180deg); border: 2px solid var(--border); }
+
+.flashcard-word {
+  font-family: 'Source Serif 4', serif; font-size: 2.2rem; font-weight: 700;
+  text-align: center; margin-bottom: 8px;
+}
+
+.flashcard-hint { font-size: 0.9rem; opacity: 0.7; }
+.flashcard-translation {
+  font-size: 1.8rem; font-weight: 700; color: var(--primary);
+  text-align: center; margin-bottom: 8px;
+}
+
+.flashcard-type {
+  font-size: 0.8rem; color: var(--text-muted); background: var(--bg-secondary);
+  padding: 4px 12px; border-radius: 20px;
+}
+
+.flashcard-tap { font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-top: 12px; }
+
+.flashcard-controls {
+  display: flex; gap: 12px; width: 100%; max-width: 500px;
+}
+
+.fc-btn {
+  flex: 1; padding: 14px; border: none; border-radius: var(--radius);
+  font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: var(--transition);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+
+.fc-btn.know { background: var(--success); color: white; }
+.fc-btn.dont-know { background: var(--error); color: white; }
+.fc-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+/* Multiple Choice */
+.mc-container { max-width: 600px; margin: 0 auto; padding: 20px 0; }
+.mc-header { text-align: center; margin-bottom: 24px; }
+.mc-question-label { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; }
+
+.mc-word {
+  font-family: 'Source Serif 4', serif; font-size: 2.5rem; font-weight: 700;
+  color: var(--primary); text-align: center; margin-bottom: 28px; padding: 24px;
+  background: var(--bg-card); border-radius: var(--radius-xl);
+  box-shadow: var(--shadow); border: 2px solid var(--border);
+}
+
+.mc-options { display: grid; gap: 12px; }
+
+.mc-option {
+  background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius);
+  padding: 16px 20px; font-size: 1.05rem; font-weight: 500; cursor: pointer;
+  transition: var(--transition); text-align: left; display: flex; align-items: center; gap: 12px;
+}
+
+.mc-option:hover { border-color: var(--primary-light); background: var(--bg-secondary); transform: translateX(4px); }
+
+.mc-option .option-letter {
+  width: 32px; height: 32px; border-radius: 8px; background: var(--bg-secondary);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem; color: var(--text-secondary); flex-shrink: 0;
+}
+
+.mc-option.correct { border-color: var(--success); background: rgba(16,185,129,0.1); animation: scaleIn 0.3s ease; }
+.mc-option.correct .option-letter { background: var(--success); color: white; }
+.mc-option.wrong { border-color: var(--error); background: rgba(239,68,68,0.1); animation: shake 0.4s ease; }
+.mc-option.wrong .option-letter { background: var(--error); color: white; }
+.mc-option.disabled { pointer-events: none; opacity: 0.6; }
+
+/* Matching */
+.match-container { max-width: 700px; margin: 0 auto; padding: 20px 0; }
+.match-header { text-align: center; margin-bottom: 20px; }
+.match-timer { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+
+.match-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px;
+}
+
+.match-card {
+  background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius);
+  padding: 16px 12px; text-align: center; cursor: pointer; transition: var(--transition);
+  font-weight: 600; font-size: 0.95rem; min-height: 60px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.match-card:hover { border-color: var(--primary-light); transform: scale(1.03); }
+.match-card.selected { border-color: var(--primary); background: rgba(59,130,246,0.1); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+.match-card.matched { border-color: var(--success); background: rgba(16,185,129,0.1); pointer-events: none; opacity: 0.7; }
+.match-card.wrong-match { border-color: var(--error); animation: shake 0.4s ease; }
+
+/* Speed */
+.speed-container { max-width: 600px; margin: 0 auto; padding: 20px 0; }
+.speed-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+
+.speed-timer-bar {
+  width: 100%; height: 10px; background: var(--bg-secondary);
+  border-radius: 5px; overflow: hidden; margin-bottom: 24px;
+}
+
+.speed-timer-fill {
+  height: 100%; background: linear-gradient(90deg, var(--success), var(--warning, #f59e0b), var(--error));
+  border-radius: 5px; transition: width 0.1s linear;
+}
+
+.speed-word {
+  font-family: 'Source Serif 4', serif; font-size: 2.8rem; font-weight: 700;
+  text-align: center; color: var(--primary); margin-bottom: 20px;
+  min-height: 80px; display: flex; align-items: center; justify-content: center;
+}
+
+.speed-input-container { display: flex; gap: 10px; margin-bottom: 16px; }
+
+.speed-input {
+  flex: 1; padding: 14px 18px; border: 2px solid var(--border); border-radius: var(--radius);
+  font-size: 1.1rem; font-family: 'Source Serif 4', serif; background: var(--bg-card);
+  color: var(--text); transition: var(--transition);
+}
+
+.speed-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+.speed-input.correct-input { border-color: var(--success); background: rgba(16,185,129,0.05); }
+.speed-input.wrong-input { border-color: var(--error); background: rgba(239,68,68,0.05); }
+
+.speed-submit {
+  padding: 14px 24px; background: var(--primary); color: white; border: none;
+  border-radius: var(--radius); font-size: 1rem; font-weight: 600; cursor: pointer; transition: var(--transition);
+}
+
+.speed-submit:hover { background: var(--primary-dark); }
+
+.speed-score-display { text-align: center; font-size: 1.1rem; font-weight: 600; color: var(--text-secondary); }
+
+/* Writing */
+.write-container { max-width: 600px; margin: 0 auto; padding: 20px 0; }
+.write-prompt { text-align: center; margin-bottom: 24px; }
+
+.write-prompt .spanish-word {
+  font-family: 'Source Serif 4', serif; font-size: 2rem; font-weight: 700;
+  color: var(--text); margin-bottom: 8px;
+}
+
+.write-prompt .hint { font-size: 0.85rem; color: var(--text-muted); }
+
+.write-input {
+  width: 100%; padding: 18px; border: 2px solid var(--border); border-radius: var(--radius-lg);
+  font-size: 1.3rem; font-family: 'Source Serif 4', serif; background: var(--bg-card);
+  color: var(--text); text-align: center; transition: var(--transition);
+}
+
+.write-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+
+.write-actions { display: flex; gap: 10px; margin-top: 16px; }
+.write-actions button {
+  flex: 1; padding: 14px; border: none; border-radius: var(--radius);
+  font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: var(--transition);
+}
+
+.write-check { background: var(--primary); color: white; }
+.write-skip { background: var(--bg-secondary); color: var(--text); }
+
+.write-feedback {
+  text-align: center; padding: 16px; border-radius: var(--radius); margin-top: 16px;
+  font-weight: 600; display: none;
+}
+
+.write-feedback.show { display: block; animation: scaleIn 0.3s ease; }
+.write-feedback.correct { background: rgba(16,185,129,0.1); color: var(--success); }
+.write-feedback.wrong { background: rgba(239,68,68,0.1); color: var(--error); }
+
+/* Results */
+.results-container { text-align: center; padding: 40px 20px; max-width: 500px; margin: 0 auto; }
+.results-icon { font-size: 4rem; margin-bottom: 16px; animation: scaleIn 0.5s ease; }
+.results-title { font-family: 'Source Serif 4', serif; font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+.results-subtitle { color: var(--text-secondary); margin-bottom: 28px; }
+
+.results-stats {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 28px;
+}
+
+.result-stat {
+  background: var(--bg-card); border: 2px solid var(--border);
+  border-radius: var(--radius); padding: 18px;
+}
+
+.result-stat .stat-value { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+.result-stat .stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; }
+
+.results-xp {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: #1a202c;
+  padding: 16px; border-radius: var(--radius); font-size: 1.2rem; font-weight: 700; margin-bottom: 24px;
+}
+
+.results-actions { display: flex; gap: 10px; }
+.results-actions button {
+  flex: 1; padding: 14px; border: none; border-radius: var(--radius);
+  font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: var(--transition);
+}
+
+.btn-primary { background: var(--primary); color: white; }
+.btn-secondary { background: var(--bg-secondary); color: var(--text); }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-secondary:hover { background: var(--border); }
+
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px; background: none; border: none;
+  color: var(--text-secondary); font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  padding: 8px 0; margin-bottom: 12px; transition: var(--transition);
+}
+
+.back-btn:hover { color: var(--primary); }
+
+/* Vocab Reference */
+.vocab-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 28px;
+}
+
+.vocab-item {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px; display: flex; align-items: center; gap: 12px; transition: var(--transition);
+}
+
+.vocab-item:hover { box-shadow: var(--shadow); border-color: var(--primary-light); }
+.vocab-greek { font-family: 'Source Serif 4', serif; font-size: 1.2rem; font-weight: 700; color: var(--primary); min-width: 100px; }
+.vocab-spanish { font-size: 0.95rem; color: var(--text); flex: 1; }
+
+.vocab-type {
+  font-size: 0.7rem; color: var(--text-muted); background: var(--bg-secondary);
+  padding: 2px 8px; border-radius: 10px;
+}
+
+.tabs {
+  display: flex; gap: 4px; background: var(--bg-secondary); border-radius: var(--radius);
+  padding: 4px; margin-bottom: 20px; overflow-x: auto;
+}
+
+.tab {
+  padding: 10px 18px; border: none; background: none; border-radius: 8px;
+  font-size: 0.85rem; font-weight: 600; cursor: pointer; color: var(--text-secondary); transition: var(--transition); white-space: nowrap;
+}
+
+.tab.active { background: var(--bg-card); color: var(--primary); box-shadow: var(--shadow); }
+
+/* Settings */
+.settings-panel {
+  background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px;
+}
+
+.setting-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+
+.setting-row:last-child { border-bottom: none; }
+.setting-label { font-weight: 600; font-size: 0.95rem; }
+.setting-desc { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+.toggle {
+  width: 48px; height: 26px; background: var(--bg-secondary); border-radius: 13px;
+  position: relative; cursor: pointer; transition: var(--transition);
+}
+
+.toggle.active { background: var(--primary); }
+.toggle::after {
+  content: ''; position: absolute; width: 22px; height: 22px; background: white;
+  border-radius: 50%; top: 2px; left: 2px; transition: var(--transition);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.toggle.active::after { left: 24px; }
+
+.daily-ring-container {
+  display: flex; align-items: center; gap: 16px; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 20px;
+}
+
+.daily-ring { width: 64px; height: 64px; position: relative; }
+.daily-ring svg { transform: rotate(-90deg); }
+
+.daily-ring-text {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  font-size: 0.85rem; font-weight: 700; color: var(--primary);
+}
+
+.daily-info h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; }
+.daily-info p { font-size: 0.8rem; color: var(--text-secondary); }
+
+.confetti-container {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 300; overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute; width: 10px; height: 10px; border-radius: 2px;
+  animation: confettiFall 1s ease forwards;
+}
+
+.loading-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: var(--bg); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; z-index: 500; transition: opacity 0.5s ease;
+}
+
+.loading-overlay.hidden { opacity: 0; pointer-events: none; }
+
+.loading-spinner {
+  width: 48px; height: 48px; border: 4px solid var(--border);
+  border-top-color: var(--primary); border-radius: 50%;
+  animation: spin 0.8s linear infinite; margin-bottom: 16px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { color: var(--text-secondary); font-size: 0.9rem; }
+
+.word-count {
+  display: inline-flex; align-items: center; gap: 4px; background: var(--bg-secondary);
+  padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary);
+}
+
+.footer {
+  text-align: center; padding: 24px 0; margin-top: 40px;
+  border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.8rem;
+}
+
+.footer strong { color: var(--primary); }
+
+.bottom-nav {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--bg-card); border-top: 1px solid var(--border);
+  padding: 8px 0; z-index: 100;
+}
+
+@media (max-width: 768px) {
+  .bottom-nav { display: flex; justify-content: space-around; }
+  body { padding-bottom: 70px; }
+}
+
+.nav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 12px;
+  border: none; background: none; color: var(--text-muted); font-size: 0.65rem;
+  font-weight: 600; cursor: pointer; transition: var(--transition);
+}
+
+.nav-item.active { color: var(--primary); }
+.nav-item .nav-icon { font-size: 1.3rem; }
+
+@media (max-width: 768px) {
+  .hero { padding: 24px 20px; }
+  .hero h2 { font-size: 1.4rem; }
+  .hero-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .hero-stat .number { font-size: 1.2rem; }
+  .modes-grid { grid-template-columns: repeat(2, 1fr); }
+  .flashcard-wrapper { height: 260px; }
+  .flashcard-word { font-size: 1.8rem; }
+  .mc-word { font-size: 2rem; }
+  .speed-word { font-size: 2.2rem; }
+  .results-stats { grid-template-columns: repeat(2, 1fr); }
+  .logo-text h1 { font-size: 0.95rem; }
+  .xp-display { font-size: 0.8rem; padding: 4px 10px; }
+  .streak-display { font-size: 0.8rem; padding: 4px 10px; }
+}
+
+@media (max-width: 480px) {
+  .app-container { padding: 0 12px; }
+  .hero { padding: 20px 16px; margin: 16px 0; }
+  .hero h2 { font-size: 1.2rem; }
+  .modes-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .mode-card { padding: 14px 10px; }
+  .mode-card .mode-icon { width: 44px; height: 44px; font-size: 1.2rem; }
+  .mode-card h4 { font-size: 0.8rem; }
+  .mode-card p { font-size: 0.7rem; }
+  .flashcard-wrapper { height: 220px; }
+  .flashcard-word { font-size: 1.5rem; }
+  .flashcard-translation { font-size: 1.4rem; }
+  .mc-word { font-size: 1.6rem; padding: 16px; }
+  .mc-option { padding: 12px 14px; font-size: 0.95rem; }
+  .speed-word { font-size: 1.8rem; }
+  .match-grid { grid-template-columns: repeat(2, 1fr); }
+  .vocab-grid { grid-template-columns: 1fr; }
+  .header-inner { gap: 8px; }
+  .logo-img { width: 36px; height: 36px; }
+  .logo-text h1 { font-size: 0.85rem; }
+  .logo-text span { font-size: 0.65rem; }
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Cargando Griego Koiné...</div>
+</div>
+
+<div class="confetti-container" id="confettiContainer"></div>
+
+<header class="header">
+  <div class="app-container">
+    <div class="header-inner">
+      <div class="logo-section" onclick="navigateTo('home')">
+        <img src="https://i.postimg.cc/wMJ2bCgV/mas-logos.jpg" alt="Logo" class="logo-img">
+        <div class="logo-text">
+          <h1>Griego Koiné</h1>
+          <span>Sección Educativa - Vivos para Servir</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="streak-display">
+          <span class="fire">🔥</span>
+          <span id="streakCount">0</span>
+        </div>
+        <div class="xp-display">
+          <span>⭐</span>
+          <span id="xpCount">0</span> XP
+        </div>
+        <button class="header-btn" onclick="toggleTheme()" id="themeToggle">🌙</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="app-container">
+
+  <!-- HOME -->
+  <div class="screen active" id="screen-home">
+    <div class="hero">
+      <h2>📖 Bienvenido al Estudio del Griego</h2>
+      <p>Domina el vocabulario del griego Koiné para profundizar en las Escrituras.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="number" id="totalWordsLearned">0</span><span class="label">Palabras</span></div>
+        <div class="hero-stat"><span class="number" id="totalExercises">0</span><span class="label">Ejercicios</span></div>
+        <div class="hero-stat"><span class="number" id="accuracyRate">0%</span><span class="label">Precisión</span></div>
+      </div>
+    </div>
+
+    <div class="daily-ring-container">
+      <div class="daily-ring">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="28" fill="none" stroke="var(--bg-secondary)" stroke-width="5"/>
+          <circle cx="32" cy="32" r="28" fill="none" stroke="var(--primary)" stroke-width="5" 
+                  stroke-dasharray="175.9" id="dailyRingProgress" stroke-dashoffset="175.9" stroke-linecap="round"/>
+        </svg>
+        <div class="daily-ring-text" id="dailyRingText">0/10</div>
+      </div>
+      <div class="daily-info">
+        <h4>Meta Diaria</h4>
+        <p id="dailyProgressText">Practica 10 palabras hoy</p>
+      </div>
+    </div>
+
+    <h3 class="section-title">📚 Niveles de Estudio</h3>
+    <div class="levels-grid" id="levelsGrid"></div>
+
+    <h3 class="section-title">⚡ Práctica Rápida</h3>
+    <div class="modes-grid" id="quickModes"></div>
+  </div>
+
+  <!-- MODE SELECT -->
+  <div class="screen" id="screen-modeSelect">
+    <button class="back-btn" onclick="navigateTo('home')">← Volver</button>
+    <h3 class="section-title" id="modeSelectTitle">Selecciona un Modo</h3>
+    <div class="modes-grid" id="modeGrid"></div>
+  </div>
+
+  <!-- FLASHCARD -->
+  <div class="screen" id="screen-flashcard">
+    <button class="back-btn" onclick="endSession()">← Salir</button>
+    <div class="flashcard-container">
+      <div class="flashcard-progress">
+        <div class="flashcard-progress-text" id="fcProgressText">1 de 10</div>
+        <div class="flashcard-progress-bar">
+          <div class="flashcard-progress-fill" id="fcProgressFill" style="width: 10%"></div>
+        </div>
+      </div>
+      <div class="flashcard-wrapper" onclick="flipFlashcard()">
+        <div class="flashcard" id="flashcard">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-word" id="fcWord"></div>
+            <div class="flashcard-hint" id="fcHint"></div>
+            <div class="flashcard-tap">Toca para voltear</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-translation" id="fcTranslation"></div>
+            <div class="flashcard-type" id="fcType"></div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard-controls">
+        <button class="fc-btn dont-know" onclick="flashcardResponse(false)">✕ No lo sé</button>
+        <button class="fc-btn know" onclick="flashcardResponse(true)">✓ Lo sé</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MULTIPLE CHOICE -->
+  <div class="screen" id="screen-multipleChoice">
+    <button class="back-btn" onclick="endSession()">← Salir</button>
+    <div class="mc-container">
+      <div class="mc-header">
+        <div class="mc-question-label" id="mcLabel">Pregunta 1 de 10</div>
+        <div class="flashcard-progress">
+          <div class="flashcard-progress-bar">
+            <div class="flashcard-progress-fill" id="mcProgressFill" style="width: 10%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="mc-word" id="mcWord"></div>
+      <div class="mc-options" id="mcOptions"></div>
+    </div>
+  </div>
+
+  <!-- MATCHING -->
+  <div class="screen" id="screen-matching">
+    <button class="back-btn" onclick="endSession()">← Salir</button>
+    <div class="match-container">
+      <div class="match-header">
+        <div class="match-timer" id="matchTimer">⏱ 00:00</div>
+        <div class="mc-question-label" id="matchLabel">Empareja las palabras</div>
+      </div>
+      <div class="match-grid" id="matchGrid"></div>
+    </div>
+  </div>
+
+  <!-- SPEED -->
+  <div class="screen" id="screen-speed">
+    <button class="back-btn" onclick="endSession()">← Salir</button>
+    <div class="speed-container">
+      <div class="speed-header">
+        <span class="word-count" id="speedScore">⭐ 0</span>
+        <span class="word-count" id="speedTimer">⏱ 60s</span>
+      </div>
+      <div class="speed-timer-bar">
+        <div class="speed-timer-fill" id="speedTimerFill" style="width: 100%"></div>
+      </div>
+      <div class="speed-word" id="speedWord"></div>
+      <div class="speed-input-container">
+        <input type="text" class="speed-input" id="speedInput" placeholder="Escribe la traducción..." autocomplete="off">
+        <button class="speed-submit" onclick="checkSpeedAnswer()">✓</button>
+      </div>
+      <div class="speed-score-display" id="speedFeedback"></div>
+    </div>
+  </div>
+
+  <!-- WRITING -->
+  <div class="screen" id="screen-writing">
+    <button class="back-btn" onclick="endSession()">← Salir</button>
+    <div class="write-container">
+      <div class="write-prompt">
+        <div class="mc-question-label" id="writeLabel">Pregunta 1 de 10</div>
+        <div class="flashcard-progress" style="margin-top: 10px;">
+          <div class="flashcard-progress-bar">
+            <div class="flashcard-progress-fill" id="writeProgressFill" style="width: 10%"></div>
+          </div>
+        </div>
+        <div class="spanish-word" id="writeSpanish"></div>
+        <div class="hint" id="writeHint"></div>
+      </div>
+      <div class="write-input-area">
+        <input type="text" class="write-input" id="writeInput" placeholder="Escribe en griego..." autocomplete="off">
+        <div class="write-actions">
+          <button class="write-skip" onclick="skipWriting()">Omitir</button>
+          <button class="write-check" onclick="checkWriting()">Comprobar</button>
+        </div>
+      </div>
+      <div class="write-feedback" id="writeFeedback"></div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="screen-results">
+    <div class="results-container">
+      <div class="results-icon" id="resultsIcon"></div>
+      <h2 class="results-title" id="resultsTitle">¡Excelente!</h2>
+      <p class="results-subtitle" id="resultsSubtitle">Has completado la sesión</p>
+      <div class="results-stats">
+        <div class="result-stat"><div class="stat-value" id="resultCorrect">0</div><div class="stat-label">Correctas</div></div>
+        <div class="result-stat"><div class="stat-value" id="resultWrong">0</div><div class="stat-label">Incorrectas</div></div>
+        <div class="result-stat"><div class="stat-value" id="resultAccuracy">0%</div><div class="stat-label">Precisión</div></div>
+        <div class="result-stat"><div class="stat-value" id="resultTime">0s</div><div class="stat-label">Tiempo</div></div>
+      </div>
+      <div class="results-xp" id="resultsXP">+0 XP</div>
+      <div class="results-actions">
+        <button class="btn-secondary" onclick="navigateTo('home')">🏠 Inicio</button>
+        <button class="btn-primary" onclick="retrySession()">🔄 Repetir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOCAB REFERENCE -->
+  <div class="screen" id="screen-vocab">
+    <button class="back-btn" onclick="navigateTo('home')">← Volver</button>
+    <h3 class="section-title">📖 Vocabulario de Referencia</h3>
+    <div class="tabs" id="vocabTabs"></div>
+    <div class="vocab-grid" id="vocabGrid"></div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="screen" id="screen-settings">
+    <button class="back-btn" onclick="navigateTo('home')">← Volver</button>
+    <h3 class="section-title">⚙️ Configuración</h3>
+    <div class="settings-panel">
+      <div class="setting-row">
+        <div><div class="setting-label">Modo Oscuro</div><div class="setting-desc">Cambia entre tema claro y oscuro</div></div>
+        <div class="toggle" id="darkModeToggle" onclick="toggleTheme()"></div>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Sonidos</div><div class="setting-desc">Efectos de sonido en respuestas</div></div>
+        <div class="toggle active" id="soundToggle" onclick="toggleSound()"></div>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Palabras por sesión</div><div class="setting-desc">Número de palabras en cada ejercicio</div></div>
+        <select id="wordsPerSession" onchange="updateWordsPerSession()" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);font-size:0.9rem;">
+          <option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Meta diaria</div><div class="setting-desc">Palabras a practicar por día</div></div>
+        <select id="dailyGoal" onchange="updateDailyGoal()" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);font-size:0.9rem;">
+          <option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Reiniciar progreso</div><div class="setting-desc">Borrar todo el progreso guardado</div></div>
+        <button onclick="resetProgress()" style="padding:8px 16px;background:var(--error);color:white;border:none;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;">Reiniciar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>© 2026 Sección Educativa del Ministerio <strong>"Vivos para Servir"</strong></p>
+    <p style="margin-top:4px;">Aprendizaje de Griego Koiné para el servicio del Señor</p>
+  </footer>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="navigateTo('home')"><span class="nav-icon">🏠</span><span>Inicio</span></button>
+  <button class="nav-item" onclick="navigateTo('vocab')"><span class="nav-icon">📖</span><span>Vocabulario</span></button>
+  <button class="nav-item" onclick="navigateTo('settings')"><span class="nav-icon">⚙️</span><span>Ajustes</span></button>
+</nav>
+
+<script>
+const VOCAB = {
+  principiante: [
+    { greek: "ἀγάπη", spanish: "amor", type: "sustantivo" },
+    { greek: "ἀδελφός", spanish: "hermano", type: "sustantivo" },
+    { greek: "αἷμα", spanish: "sangre", type: "sustantivo" },
+    { greek: "αἰών", spanish: "siglo, eternidad", type: "sustantivo" },
+    { greek: "ἄνθρωπος", spanish: "hombre, persona", type: "sustantivo" },
+    { greek: "ἀπόστολος", spanish: "apóstol", type: "sustantivo" },
+    { greek: "ἀρχή", spanish: "principio", type: "sustantivo" },
+    { greek: "βασιλεύς", spanish: "rey", type: "sustantivo" },
+    { greek: "βασιλεία", spanish: "reino", type: "sustantivo" },
+    { greek: "βιβλίον", spanish: "libro", type: "sustantivo" },
+    { greek: "γῆ", spanish: "tierra", type: "sustantivo" },
+    { greek: "γραφή", spanish: "escritura", type: "sustantivo" },
+    { greek: "δίδωμι", spanish: "dar", type: "verbo" },
+    { greek: "διδάσκαλος", spanish: "maestro", type: "sustantivo" },
+    { greek: "δίκαιος", spanish: "justo", type: "adjetivo" },
+    { greek: "δοῦλος", spanish: "siervo", type: "sustantivo" },
+    { greek: "ἐκκλησία", spanish: "iglesia", type: "sustantivo" },
+    { greek: "ἔλεος", spanish: "misericordia", type: "sustantivo" },
+    { greek: "ἐλπίς", spanish: "esperanza", type: "sustantivo" },
+    { greek: "εἰρήνη", spanish: "paz", type: "sustantivo" },
+    { greek: "ἔργον", spanish: "obra, trabajo", type: "sustantivo" },
+    { greek: "ζωή", spanish: "vida", type: "sustantivo" },
+    { greek: "ἡμέρα", spanish: "día", type: "sustantivo" },
+    { greek: "θάλασσα", spanish: "mar", type: "sustantivo" },
+    { greek: "θέλημα", spanish: "voluntad", type: "sustantivo" },
+    { greek: "Ἰησοῦς", spanish: "Jesús", type: "nombre" },
+    { greek: "καρδία", spanish: "corazón", type: "sustantivo" },
+    { greek: "κόσμος", spanish: "mundo", type: "sustantivo" },
+    { greek: "λόγος", spanish: "palabra, verbo", type: "sustantivo" },
+    { greek: "μαθητής", spanish: "discípulo", type: "sustantivo" },
+    { greek: "οὐρανός", spanish: "cielo", type: "sustantivo" },
+    { greek: "πίστις", spanish: "fe", type: "sustantivo" },
+    { greek: "πόλις", spanish: "ciudad", type: "sustantivo" },
+    { greek: "πνεῦμα", spanish: "espíritu", type: "sustantivo" },
+    { greek: "σάρξ", spanish: "carne", type: "sustantivo" },
+    { greek: "σωτηρία", spanish: "salvación", type: "sustantivo" },
+    { greek: "τέκνον", spanish: "hijo", type: "sustantivo" },
+    { greek: "ὕδωρ", spanish: "agua", type: "sustantivo" },
+    { greek: "φῶς", spanish: "luz", type: "sustantivo" },
+    { greek: "χαρά", spanish: "gozo", type: "sustantivo" },
+    { greek: "χάρις", spanish: "gracia", type: "sustantivo" },
+    { greek: "Χριστός", spanish: "Cristo", type: "nombre" },
+    { greek: "ὁδός", spanish: "camino", type: "sustantivo" },
+    { greek: "οἶκος", spanish: "casa", type: "sustantivo" },
+    { greek: "πατήρ", spanish: "padre", type: "sustantivo" },
+    { greek: "εὐαγγέλιον", spanish: "evangelio", type: "sustantivo" },
+    { greek: "προφήτης", spanish: "profeta", type: "sustantivo" },
+    { greek: "ἁμαρτία", spanish: "pecado", type: "sustantivo" },
+    { greek: "θάνατος", spanish: "muerte", type: "sustantivo" },
+    { greek: "ἀκούω", spanish: "oír, escuchar", type: "verbo" },
+    { greek: "γινώσκω", spanish: "conocer", type: "verbo" },
+    { greek: "βλέπω", spanish: "ver, mirar", type: "verbo" },
+    { greek: "ἔρχομαι", spanish: "venir, ir", type: "verbo" },
+    { greek: "λέγω", spanish: "decir", type: "verbo" },
+    { greek: "πιστεύω", spanish: "creer", type: "verbo" },
+    { greek: "ἀγαπάω", spanish: "amar", type: "verbo" },
+    { greek: "ἐγγίζω", spanish: "acercarse", type: "verbo" }
+  ],
+  intermedio: [
+    { greek: "δικαιοσύνη", spanish: "justicia", type: "sustantivo" },
+    { greek: "ἀκολουθέω", spanish: "seguir", type: "verbo" },
+    { greek: "καταργέω", spanish: "abolir, anular", type: "verbo" },
+    { greek: "μαρτυρέω", spanish: "testificar", type: "verbo" },
+    { greek: "παρακαλέω", spanish: "exhortar, consolar", type: "verbo" },
+    { greek: "προσεύχομαι", spanish: "orar", type: "verbo" },
+    { greek: "συνίημι", spanish: "comprender", type: "verbo" },
+    { greek: "τελειόω", spanish: "perfeccionar", type: "verbo" },
+    { greek: "ὑπομένω", spanish: "perseverar", type: "verbo" },
+    { greek: "φανερόω", spanish: "manifestar", type: "verbo" },
+    { greek: "ἁγιάζω", spanish: "santificar", type: "verbo" },
+    { greek: "καταλλάσσω", spanish: "reconciliar", type: "verbo" },
+    { greek: "μετανοέω", spanish: "arrepentirse", type: "verbo" },
+    { greek: "σῴζω", spanish: "salvar", type: "verbo" },
+    { greek: "μαρτυρία", spanish: "testimonio", type: "sustantivo" },
+    { greek: "μυστήριον", spanish: "misterio", type: "sustantivo" },
+    { greek: "παράκλησις", spanish: "consolación", type: "sustantivo" },
+    { greek: "παρουσία", spanish: "venida, presencia", type: "sustantivo" },
+    { greek: "προσευχή", spanish: "oración", type: "sustantivo" },
+    { greek: "συνείδησις", spanish: "conciencia", type: "sustantivo" },
+    { greek: "ὑπακοή", spanish: "obediencia", type: "sustantivo" },
+    { greek: "ψυχή", spanish: "alma", type: "sustantivo" },
+    { greek: "ἀλήθεια", spanish: "verdad", type: "sustantivo" },
+    { greek: "αἰώνιος", spanish: "eterno", type: "adjetivo" },
+    { greek: "καλός", spanish: "bueno, hermoso", type: "adjetivo" },
+    { greek: "ἅγιος", spanish: "santo", type: "adjetivo" },
+    { greek: "σοφός", spanish: "sabio", type: "adjetivo" },
+    { greek: "πολλός", spanish: "mucho, muchos", type: "adjetivo" },
+    { greek: "ὀλίγος", spanish: "poco, pocos", type: "adjetivo" },
+    { greek: "μέγας", spanish: "grande", type: "adjetivo" },
+    { greek: "μικρός", spanish: "pequeño", type: "adjetivo" },
+    { greek: "πᾶς", spanish: "todo, cada", type: "adjetivo" },
+    { greek: "πρῶτος", spanish: "primero", type: "adjetivo" },
+    { greek: "ἔσχατος", spanish: "último", type: "adjetivo" },
+    { greek: "πλούσιος", spanish: "rico", type: "adjetivo" },
+    { greek: "πτωχός", spanish: "pobre", type: "adjetivo" },
+    { greek: "ταπεινός", spanish: "humilde", type: "adjetivo" },
+    { greek: "ὑψηλός", spanish: "alto, elevado", type: "adjetivo" },
+    { greek: "ἐλεύθερος", spanish: "libre", type: "adjetivo" },
+    { greek: "νέος", spanish: "joven, nuevo", type: "adjetivo" }
+  ],
+  avanzado: [
+    { greek: "ἀποκάλυψις", spanish: "revelación", type: "sustantivo" },
+    { greek: "ἀποκαλύπτω", spanish: "revelar", type: "verbo" },
+    { greek: "προορίζω", spanish: "predestinar", type: "verbo" },
+    { greek: "δικαιόω", spanish: "justificar", type: "verbo" },
+    { greek: "δοξάζω", spanish: "glorificar", type: "verbo" },
+    { greek: "ἐκλέγομαι", spanish: "elegir, escoger", type: "verbo" },
+    { greek: "ἐμφανίζω", spanish: "manifestar, aparecer", type: "verbo" },
+    { greek: "διαλογίζομαι", spanish: "razonar, disputar", type: "verbo" },
+    { greek: "ἐπιποθέω", spanish: "anhelar, desear", type: "verbo" },
+    { greek: "εὐδοκέω", spanish: "estar bien dispuesto", type: "verbo" },
+    { greek: "λογίζομαι", spanish: "considerar, contar", type: "verbo" },
+    { greek: "προσκυνέω", spanish: "adorar", type: "verbo" },
+    { greek: "ἐπιτρέπω", spanish: "permitir", type: "verbo" },
+    { greek: "προφητεύω", spanish: "profetizar", type: "verbo" },
+    { greek: "συνάγω", spanish: "reunir, juntar", type: "verbo" },
+    { greek: "ὑποτάσσω", spanish: "sujetar, someter", type: "verbo" },
+    { greek: "διαθήκη", spanish: "pacto, testamento", type: "sustantivo" },
+    { greek: "ἐξουσία", spanish: "autoridad, poder", type: "sustantivo" },
+    { greek: "ἐπιφάνεια", spanish: "aparición, manifestación", type: "sustantivo" },
+    { greek: "κατάκριμα", spanish: "condenación", type: "sustantivo" },
+    { greek: "μεταμόρφωσις", spanish: "transformación", type: "sustantivo" },
+    { greek: "παράπτωμα", spanish: "transgresión, caída", type: "sustantivo" },
+    { greek: "προσφορά", spanish: "ofrenda", type: "sustantivo" },
+    { greek: "συναγωγή", spanish: "sinagoga, asamblea", type: "sustantivo" },
+    { greek: "ὑπόστασις", spanish: "sustancia, confianza", type: "sustantivo" },
+    { greek: "χάρισμα", spanish: "don, gracia", type: "sustantivo" },
+    { greek: "φρόνημα", spanish: "pensamiento, mente", type: "sustantivo" },
+    { greek: "ἀπαγγέλλω", spanish: "relatar, anunciar", type: "verbo" },
+    { greek: "συντελέω", spanish: "consumar, completar", type: "verbo" },
+    { greek: "ἀπολύω", spanish: "liberar, despedir", type: "verbo" }
+  ]
+};
+
+let state = {
+  currentScreen: 'home',
+  currentLevel: 'principiante',
+  currentMode: null,
+  session: [],
+  currentIndex: 0,
+  correct: 0,
+  wrong: 0,
+  sessionXP: 0,
+  xp: 0,
+  streak: 0,
+  totalExercises: 0,
+  totalCorrect: 0,
+  totalWrong: 0,
+  wordsPerSession: 10,
+  dailyGoal: 10,
+  dailyCompleted: 0,
+  lastDate: null,
+  darkMode: false,
+  soundEnabled: true,
+  matchTimer: null,
+  matchSeconds: 0,
+  matchCards: [],
+  selectedCard: null,
+  matchedPairs: 0,
+  speedTimerInterval: null,
+  speedTimeLeft: 60,
+  speedScoreVal: 0,
+  previousScreen: 'home',
+  unlockedLevels: { principiante: true, intermedio: false, avanzado: false },
+  levelProgress: { principiante: 0, intermedio: 0, avanzado: 0 }
+};
+
+function init() {
+  loadState();
+  renderHome();
+  updateUI();
+  document.getElementById('loadingOverlay').classList.add('hidden');
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('greekAppState');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      state = Object.assign({}, state, parsed);
+    }
+    const today = new Date().toDateString();
+    if (state.lastDate !== today) {
+      if (state.lastDate === new Date(Date.now() - 86400000).toDateString() && state.dailyCompleted >= state.dailyGoal) {
+        state.streak = state.streak + 1;
+      } else if (state.lastDate !== today) {
+        state.streak = 0;
+      }
+      state.dailyCompleted = 0;
+      state.lastDate = today;
+    }
+  } catch(e) {
+    console.error('Error loading state:', e);
+  }
+  
+  if (state.darkMode) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('themeToggle').textContent = '☀️';
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('greekAppState', JSON.stringify(state));
+  } catch(e) {}
+}
+
+function navigateTo(screenName) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  var target = document.getElementById('screen-' + screenName);
+  if (target) {
+    target.classList.add('active');
+    state.currentScreen = screenName;
+  }
+  
+  document.querySelectorAll('.nav-item').forEach(function(n, i) {
+    n.classList.remove('active');
+    if ((screenName === 'home' && i === 0) || (screenName === 'vocab' && i === 1) || (screenName === 'settings' && i === 2)) {
+      n.classList.add('active');
+    }
+  });
+  
+  if (screenName === 'home') renderHome();
+  if (screenName === 'vocab') renderVocab();
+  if (screenName === 'settings') renderSettings();
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderHome() {
+  updateUI();
+  renderLevels();
+  renderQuickModes();
+}
+
+function renderLevels() {
+  var grid = document.getElementById('levelsGrid');
+  var levels = [
+    { id: 'principiante', name: 'Principiante', desc: 'Palabras fundamentales del griego Koiné', count: VOCAB.principiante.length },
+    { id: 'intermedio', name: 'Intermedio', desc: 'Vocabulario intermedio y gramática', count: VOCAB.intermedio.length },
+    { id: 'avanzado', name: 'Avanzado', desc: 'Vocabulario avanzado y términos teológicos', count: VOCAB.avanzado.length }
+  ];
+  
+  var html = '';
+  levels.forEach(function(l, idx) {
+    var isLocked = !state.unlockedLevels[l.id];
+    var progress = state.levelProgress[l.id] || 0;
+    var badgeText = isLocked ? '🔒 Bloqueado' : (progress >= 100 ? '✓ Completo' : progress + '%');
+    var badgeColor = isLocked ? '' : (progress >= 100 ? 'background:var(--success)' : '');
+    var onClick = isLocked ? '' : "selectLevel('" + l.id + "')";
+    var classes = 'level-card' + (isLocked ? ' locked' : '');
+    
+    html += '<div class="' + classes + '" onclick="' + onClick + '">';
+    html += '<div class="level-icon">' + ['🌱', '📗', '📕'][idx] + '</div>';
+    html += '<div class="level-info">';
+    html += '<h3>' + l.name + '</h3>';
+    html += '<p>' + l.desc + ' · ' + l.count + ' palabras</p>';
+    html += '<div class="level-progress"><div class="level-progress-bar" style="width: ' + progress + '%"></div></div>';
+    html += '</div>';
+    html += '<span class="level-badge" style="' + badgeColor + '">' + badgeText + '</span>';
+    html += '</div>';
+  });
+  
+  grid.innerHTML = html;
+}
+
+function renderQuickModes() {
+  var grid = document.getElementById('quickModes');
+  var modes = [
+    { id: 'flashcard', name: 'Tarjetas', icon: '🃏', desc: 'Flashcards interactivas' },
+    { id: 'multipleChoice', name: 'Selección', icon: '📝', desc: 'Elige la respuesta correcta' },
+    { id: 'matching', name: 'Enlace', icon: '🔗', desc: 'Conecta pares de palabras' },
+    { id: 'speed', name: 'Carrera', icon: '⚡', desc: 'Traduce contra reloj' },
+    { id: 'writing', name: 'Escritura', icon: '✍️', desc: 'Escribe la respuesta' }
+  ];
+  
+  var html = '';
+  modes.forEach(function(m) {
+    html += '<div class="mode-card" onclick="selectLevel(\'principiante\'); setTimeout(function(){startMode(\'' + m.id + '\')}, 100)">';
+    html += '<div class="mode-icon">' + m.icon + '</div>';
+    html += '<h4>' + m.name + '</h4>';
+    html += '<p>' + m.desc + '</p></div>';
+  });
+  
+  grid.innerHTML = html;
+}
+
+function selectLevel(levelId) {
+  state.currentLevel = levelId;
+  
+  var title = document.getElementById('modeSelectTitle');
+  var levelNames = { principiante: 'Principiante', intermedio: 'Intermedio', avanzado: 'Avanzado' };
+  title.textContent = 'Modos de Estudio - ' + levelNames[levelId];
+  
+  var grid = document.getElementById('modeGrid');
+  var modes = [
+    { id: 'flashcard', name: 'Tarjetas', icon: '🃏', desc: 'Tarjetas interactivas con volteo' },
+    { id: 'multipleChoice', name: 'Selección Múltiple', icon: '📝', desc: 'Elige la traducción correcta' },
+    { id: 'matching', name: 'Enlace', icon: '🔗', desc: 'Conecta griego con español' },
+    { id: 'speed', name: 'Carrera', icon: '⚡', desc: 'Traduce contra reloj' },
+    { id: 'writing', name: 'Escritura', icon: '✍️', desc: 'Escribe la traducción' }
+  ];
+  
+  var html = '';
+  modes.forEach(function(m) {
+    html += '<div class="mode-card" onclick="startMode(\'' + m.id + '\')">';
+    html += '<div class="mode-icon">' + m.icon + '</div>';
+    html += '<h4>' + m.name + '</h4>';
+    html += '<p>' + m.desc + '</p></div>';
+  });
+  
+  grid.innerHTML = html;
+  navigateTo('modeSelect');
+}
+
+function startMode(modeId) {
+  state.currentMode = modeId;
+  state.currentIndex = 0;
+  state.correct = 0;
+  state.wrong = 0;
+  state.sessionXP = 0;
+  
+  var words = VOCAB[state.currentLevel].slice();
+  shuffleArray(words);
+  state.session = words.slice(0, state.wordsPerSession);
+  
+  switch(modeId) {
+    case 'flashcard': startFlashcard(); break;
+    case 'multipleChoice': startMultipleChoice(); break;
+    case 'matching': startMatching(); break;
+    case 'speed': startSpeed(); break;
+    case 'writing': startWriting(); break;
+  }
+}
+
+// FLASHCARD
+function startFlashcard() {
+  navigateTo('flashcard');
+  updateFlashcard();
+}
+
+function updateFlashcard() {
+  var card = state.session[state.currentIndex];
+  var total = state.session.length;
+  
+  document.getElementById('fcWord').textContent = card.greek;
+  document.getElementById('fcHint').textContent = card.type;
+  document.getElementById('fcTranslation').textContent = card.spanish;
+  document.getElementById('fcType').textContent = card.type;
+  document.getElementById('fcProgressText').textContent = (state.currentIndex + 1) + ' de ' + total;
+  document.getElementById('fcProgressFill').style.width = (((state.currentIndex + 1) / total) * 100) + '%';
+  
+  document.getElementById('flashcard').classList.remove('flipped');
+}
+
+function flipFlashcard() {
+  document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function flashcardResponse(knew) {
+  if (knew) {
+    state.correct++;
+    state.sessionXP += 5;
+  } else {
+    state.wrong++;
+  }
+  
+  state.currentIndex++;
+  
+  if (state.currentIndex >= state.session.length) {
+    finishSession();
+  } else {
+    updateFlashcard();
+  }
+}
+
+// MULTIPLE CHOICE
+function startMultipleChoice() {
+  navigateTo('multipleChoice');
+  updateMultipleChoice();
+}
+
+function updateMultipleChoice() {
+  var card = state.session[state.currentIndex];
+  var total = state.session.length;
+  
+  document.getElementById('mcWord').textContent = card.greek;
+  document.getElementById('mcLabel').textContent = 'Pregunta ' + (state.currentIndex + 1) + ' de ' + total;
+  document.getElementById('mcProgressFill').style.width = (((state.currentIndex + 1) / total) * 100) + '%';
+  
+  var allWords = VOCAB[state.currentLevel];
+  var options = [card.spanish];
+  
+  while (options.length < 4) {
+    var randomWord = allWords[Math.floor(Math.random() * allWords.length)];
+    if (options.indexOf(randomWord.spanish) === -1) {
+      options.push(randomWord.spanish);
+    }
+  }
+  
+  shuffleArray(options);
+  
+  var letters = ['A', 'B', 'C', 'D'];
+  var grid = document.getElementById('mcOptions');
+  var html = '';
+  
+  options.forEach(function(opt, i) {
+    var safeOpt = opt.replace(/'/g, "\\'");
+    var safeCorrect = card.spanish.replace(/'/g, "\\'");
+    html += '<div class="mc-option" onclick="selectMCAnswer(this, \'' + safeOpt + '\', \'' + safeCorrect + '\')">';
+    html += '<span class="option-letter">' + letters[i] + '</span>';
+    html += '<span>' + opt + '</span></div>';
+  });
+  
+  grid.innerHTML = html;
+}
+
+function selectMCAnswer(el, selected, correct) {
+  var options = document.querySelectorAll('.mc-option');
+  options.forEach(function(o) {
+    o.classList.add('disabled');
+    var optText = o.querySelector('span:last-child').textContent;
+    if (optText === correct) {
+      o.classList.add('correct');
+    }
+  });
+  
+  if (selected === correct) {
+    state.correct++;
+    state.sessionXP += 10;
+  } else {
+    el.classList.add('wrong');
+    state.wrong++;
+  }
+  
+  setTimeout(function() {
+    state.currentIndex++;
+    if (state.currentIndex >= state.session.length) {
+      finishSession();
+    } else {
+      updateMultipleChoice();
+    }
+  }, 1000);
+}
+
+// MATCHING
+function startMatching() {
+  navigateTo('matching');
+  
+  var words = VOCAB[state.currentLevel].slice();
+  shuffleArray(words);
+  var selected = words.slice(0, 6);
+  
+  state.matchCards = [];
+  state.selectedCard = null;
+  state.matchedPairs = 0;
+  state.matchSeconds = 0;
+  
+  selected.forEach(function(w, i) {
+    state.matchCards.push({ id: i, text: w.greek, pairId: i, type: 'greek' });
+    state.matchCards.push({ id: i, text: w.spanish, pairId: i, type: 'spanish' });
+  });
+  
+  shuffleArray(state.matchCards);
+  
+  renderMatchGrid();
+  startMatchTimer();
+}
+
+function renderMatchGrid() {
+  var grid = document.getElementById('matchGrid');
+  var html = '';
+  
+  state.matchCards.forEach(function(card, idx) {
+    html += '<div class="match-card" id="match-' + idx + '" onclick="selectMatchCard(' + idx + ')" data-pair="' + card.pairId + '">';
+    html += card.text + '</div>';
+  });
+  
+  grid.innerHTML = html;
+}
+
+function selectMatchCard(idx) {
+  var el = document.getElementById('match-' + idx);
+  var card = state.matchCards[idx];
+  
+  if (el.classList.contains('matched')) return;
+  
+  if (!state.selectedCard) {
+    el.classList.add('selected');
+    state.selectedCard = { idx: idx, card: card };
+  } else {
+    if (state.selectedCard.idx === idx) {
+      el.classList.remove('selected');
+      state.selectedCard = null;
+      return;
+    }
+    
+    var prevEl = document.getElementById('match-' + state.selectedCard.idx);
+    var prevCard = state.selectedCard.card;
+    
+    if (prevCard.pairId === card.pairId && prevCard.type !== card.type) {
+      el.classList.add('matched');
+      prevEl.classList.add('matched');
+      el.classList.remove('selected');
+      prevEl.classList.remove('selected');
+      state.matchedPairs++;
+      state.correct++;
+      state.sessionXP += 8;
+      
+      if (state.matchedPairs >= 6) {
+        clearInterval(state.matchTimer);
+        state.sessionXP += 20;
+        setTimeout(finishSession, 500);
+      }
+      
+      state.selectedCard = null;
+    } else {
+      el.classList.add('wrong-match');
+      prevEl.classList.add('wrong-match');
+      state.wrong++;
+      
+      setTimeout(function() {
+        el.classList.remove('wrong-match', 'selected');
+        prevEl.classList.remove('wrong-match', 'selected');
+        state.selectedCard = null;
+      }, 600);
+    }
+  }
+}
+
+function startMatchTimer() {
+  clearInterval(state.matchTimer);
+  state.matchTimer = setInterval(function() {
+    state.matchSeconds++;
+    var mins = Math.floor(state.matchSeconds / 60).toString().padStart(2, '0');
+    var secs = (state.matchSeconds % 60).toString().padStart(2, '0');
+    document.getElementById('matchTimer').textContent = '⏱ ' + mins + ':' + secs;
+  }, 1000);
+}
+
+// SPEED
+function startSpeed() {
+  navigateTo('speed');
+  state.speedScoreVal = 0;
+  state.speedTimeLeft = 60;
+  
+  var words = VOCAB[state.currentLevel].slice();
+  shuffleArray(words);
+  state.session = words;
+  state.currentIndex = 0;
+  
+  document.getElementById('speedScore').textContent = '⭐ 0';
+  updateSpeedWord();
+  
+  clearInterval(state.speedTimerInterval);
+  state.speedTimerInterval = setInterval(function() {
+    state.speedTimeLeft--;
+    var pct = (state.speedTimeLeft / 60) * 100;
+    document.getElementById('speedTimerFill').style.width = pct + '%';
+    document.getElementById('speedTimer').textContent = '⏱ ' + state.speedTimeLeft + 's';
+    
+    if (state.speedTimeLeft <= 0) {
+      clearInterval(state.speedTimerInterval);
+      finishSession();
+    }
+  }, 1000);
+  
+  var input = document.getElementById('speedInput');
+  input.value = '';
+  input.focus();
+  
+  input.onkeydown = function(e) {
+    if (e.key === 'Enter') checkSpeedAnswer();
+  };
+}
+
+function updateSpeedWord() {
+  if (state.currentIndex < state.session.length) {
+    document.getElementById('speedWord').textContent = state.session[state.currentIndex].greek;
+    document.getElementById('speedFeedback').textContent = '';
+  } else {
+    state.currentIndex = 0;
+    var words = state.session.slice();
+    shuffleArray(words);
+    state.session = words;
+    document.getElementById('speedWord').textContent = state.session[0].greek;
+  }
+}
+
+function checkSpeedAnswer() {
+  var input = document.getElementById('speedInput');
+  var answer = input.value.trim().toLowerCase();
+  var correct = state.session[state.currentIndex].spanish.toLowerCase();
+  
+  if (answer === correct) {
+    state.correct++;
+    state.speedScoreVal++;
+    state.sessionXP += 5;
+    input.classList.add('correct-input');
+    input.classList.remove('wrong-input');
+    document.getElementById('speedFeedback').innerHTML = '<span style="color:var(--success)">✓ ¡Correcto!</span>';
+    state.currentIndex++;
+    
+    setTimeout(function() {
+      input.classList.remove('correct-input');
+      input.value = '';
+      updateSpeedWord();
+      input.focus();
+      document.getElementById('speedScore').textContent = '⭐ ' + state.speedScoreVal;
+    }, 500);
+  } else {
+    state.wrong++;
+    input.classList.add('wrong-input');
+    input.classList.remove('correct-input');
+    document.getElementById('speedFeedback').innerHTML = '<span style="color:var(--error)">✗ Era: ' + correct + '</span>';
+    state.currentIndex++;
+    
+    setTimeout(function() {
+      input.classList.remove('wrong-input');
+      input.value = '';
+      updateSpeedWord();
+      input.focus();
+    }, 1000);
+  }
+}
+
+// WRITING
+function startWriting() {
+  navigateTo('writing');
+  updateWriting();
+}
+
+function updateWriting() {
+  var card = state.session[state.currentIndex];
+  var total = state.session.length;
+  
+  document.getElementById('writeSpanish').textContent = card.spanish;
+  document.getElementById('writeHint').textContent = card.type;
+  document.getElementById('writeLabel').textContent = 'Pregunta ' + (state.currentIndex + 1) + ' de ' + total;
+  document.getElementById('writeProgressFill').style.width = (((state.currentIndex + 1) / total) * 100) + '%';
+  
+  var input = document.getElementById('writeInput');
+  input.value = '';
+  input.focus();
+  
+  input.onkeydown = function(e) {
+    if (e.key === 'Enter') checkWriting();
+  };
+  
+  document.getElementById('writeFeedback').classList.remove('show', 'correct', 'wrong');
+}
+
+function checkWriting() {
+  var input = document.getElementById('writeInput');
+  var answer = normalizeGreek(input.value.trim());
+  var correct = normalizeGreek(state.session[state.currentIndex].greek);
+  
+  var feedback = document.getElementById('writeFeedback');
+  feedback.classList.remove('show', 'correct', 'wrong');
+  
+  if (answer === correct) {
+    state.correct++;
+    state.sessionXP += 15;
+    feedback.classList.add('show', 'correct');
+    feedback.innerHTML = '✓ ¡Correcto! ' + state.session[state.currentIndex].greek;
+  } else {
+    state.wrong++;
+    feedback.classList.add('show', 'wrong');
+    feedback.innerHTML = '✗ Correcto: ' + state.session[state.currentIndex].greek;
+  }
+  
+  setTimeout(function() {
+    state.currentIndex++;
+    if (state.currentIndex >= state.session.length) {
+      finishSession();
+    } else {
+      updateWriting();
+    }
+  }, 1500);
+}
+
+function skipWriting() {
+  state.wrong++;
+  state.currentIndex++;
+  
+  if (state.currentIndex >= state.session.length) {
+    finishSession();
+  } else {
+    updateWriting();
+  }
+}
+
+function normalizeGreek(str) {
+  return str.toLowerCase()
+    .replace(/[άἀἁἂἃἄἅᾶᾷάὰᾳ]/g, 'α')
+    .replace(/[έἐἑἒἓἔἕέὲ]/g, 'ε')
+    .replace(/[ήἠἡἢἣἤἥἦἧήὴῃ]/g, 'η')
+    .replace(/[ίἰἱἲἳἴἵἶἷίὶϊΐ]/g, 'ι')
+    .replace(/[όὀὁὂὃὄὅόὸ]/g, 'ο')
+    .replace(/[ύὑὕὖὗύὺϋΰ]/g, 'υ')
+    .replace(/[ώὠὡὢὣὤὥὦὧώὼῳ]/g, 'ω')
+    .replace(/\s+/g, '')
+    .trim();
+}
+
+// FINISH
+function finishSession() {
+  clearInterval(state.matchTimer);
+  clearInterval(state.speedTimerInterval);
+  
+  var total = state.correct + state.wrong;
+  var accuracy = total > 0 ? Math.round((state.correct / total) * 100) : 0;
+  var xpEarned = state.sessionXP;
+  
+  state.totalExercises++;
+  state.totalCorrect += state.correct;
+  state.totalWrong += state.wrong;
+  state.xp += xpEarned;
+  
+  var progress = state.levelProgress[state.currentLevel] || 0;
+  state.levelProgress[state.currentLevel] = Math.min(100, progress + Math.round(accuracy / 10));
+  
+  if (state.levelProgress[state.currentLevel] >= 80) {
+    if (state.currentLevel === 'principiante') state.unlockedLevels.intermedio = true;
+    if (state.currentLevel === 'intermedio') state.unlockedLevels.avanzado = true;
+  }
+  
+  state.dailyCompleted += state.correct;
+  if (state.dailyCompleted >= state.dailyGoal) {
+    state.streak++;
+  }
+  
+  saveState();
+  
+  var resultsIcon = document.getElementById('resultsIcon');
+  var resultsTitle = document.getElementById('resultsTitle');
+  var resultsSubtitle = document.getElementById('resultsSubtitle');
+  
+  if (accuracy >= 90) {
+    resultsIcon.textContent = '🏆';
+    resultsTitle.textContent = '¡Excelente!';
+    resultsSubtitle.textContent = '¡Dominas este vocabulario!';
+    showConfetti();
+  } else if (accuracy >= 70) {
+    resultsIcon.textContent = '👏';
+    resultsTitle.textContent = '¡Muy bien!';
+    resultsSubtitle.textContent = 'Sigue practicando para mejorar';
+  } else if (accuracy >= 50) {
+    resultsIcon.textContent = '💪';
+    resultsTitle.textContent = '¡Buen esfuerzo!';
+    resultsSubtitle.textContent = 'Repasa las palabras difíciles';
+  } else {
+    resultsIcon.textContent = '📖';
+    resultsTitle.textContent = '¡No te rindas!';
+    resultsSubtitle.textContent = 'La práctica hace al maestro';
+  }
+  
+  document.getElementById('resultCorrect').textContent = state.correct;
+  document.getElementById('resultWrong').textContent = state.wrong;
+  document.getElementById('resultAccuracy').textContent = accuracy + '%';
+  document.getElementById('resultTime').textContent = state.currentMode === 'speed' ? '60s' : '-';
+  document.getElementById('resultsXP').textContent = '+' + xpEarned + ' XP';
+  
+  navigateTo('results');
+}
+
+function endSession() {
+  clearInterval(state.matchTimer);
+  clearInterval(state.speedTimerInterval);
+  navigateTo('home');
+}
+
+function retrySession() {
+  state.currentIndex = 0;
+  state.correct = 0;
+  state.wrong = 0;
+  state.sessionXP = 0;
+  
+  var words = VOCAB[state.currentLevel].slice();
+  shuffleArray(words);
+  state.session = words.slice(0, state.wordsPerSession);
+  
+  startMode(state.currentMode);
+}
+
+// VOCAB REFERENCE
+function renderVocab() {
+  var tabs = document.getElementById('vocabTabs');
+  var levels = ['principiante', 'intermedio', 'avanzado'];
+  
+  var html = '';
+  levels.forEach(function(l) {
+    var isActive = l === 'principiante' ? 'active' : '';
+    html += '<button class="tab ' + isActive + '" onclick="showVocabLevel(\'' + l + '\', this)">';
+    if (l === 'principiante') html += '🌱 Principiante';
+    else if (l === 'intermedio') html += '📗 Intermedio';
+    else html += '📕 Avanzado';
+    html += '</button>';
+  });
+  tabs.innerHTML = html;
+  
+  showVocabLevel('principiante');
+}
+
+function showVocabLevel(level, tab) {
+  if (tab) {
+    document.querySelectorAll('#vocabTabs .tab').forEach(function(t) { t.classList.remove('active'); });
+    tab.classList.add('active');
+  }
+  
+  var grid = document.getElementById('vocabGrid');
+  var words = VOCAB[level];
+  
+  var html = '';
+  words.forEach(function(w) {
+    html += '<div class="vocab-item">';
+    html += '<span class="vocab-greek">' + w.greek + '</span>';
+    html += '<span class="vocab-spanish">' + w.spanish + '</span>';
+    html += '<span class="vocab-type">' + w.type + '</span></div>';
+  });
+  
+  grid.innerHTML = html;
+}
+
+// SETTINGS
+function renderSettings() {
+  document.getElementById('darkModeToggle').classList.toggle('active', state.darkMode);
+  document.getElementById('wordsPerSession').value = state.wordsPerSession;
+  document.getElementById('dailyGoal').value = state.dailyGoal;
+}
+
+function toggleTheme() {
+  state.darkMode = !state.darkMode;
+  document.documentElement.setAttribute('data-theme', state.darkMode ? 'dark' : 'light');
+  document.getElementById('themeToggle').textContent = state.darkMode ? '☀️' : '🌙';
+  if (document.getElementById('darkModeToggle')) {
+    document.getElementById('darkModeToggle').classList.toggle('active', state.darkMode);
+  }
+  saveState();
+}
+
+function toggleSound() {
+  state.soundEnabled = !state.soundEnabled;
+  document.getElementById('soundToggle').classList.toggle('active', state.soundEnabled);
+  saveState();
+}
+
+function updateWordsPerSession() {
+  state.wordsPerSession = parseInt(document.getElementById('wordsPerSession').value);
+  saveState();
+}
+
+function updateDailyGoal() {
+  state.dailyGoal = parseInt(document.getElementById('dailyGoal').value);
+  saveState();
+}
+
+function resetProgress() {
+  if (confirm('¿Estás seguro de reiniciar todo el progreso?')) {
+    localStorage.removeItem('greekAppState');
+    state.xp = 0;
+    state.streak = 0;
+    state.totalExercises = 0;
+    state.totalCorrect = 0;
+    state.totalWrong = 0;
+    state.dailyCompleted = 0;
+    state.unlockedLevels = { principiante: true, intermedio: false, avanzado: false };
+    state.levelProgress = { principiante: 0, intermedio: 0, avanzado: 0 };
+    saveState();
+    renderHome();
+    alert('Progreso reiniciado');
+  }
+}
+
+// UI
+function updateUI() {
+  document.getElementById('xpCount').textContent = state.xp;
+  document.getElementById('streakCount').textContent = state.streak;
+  
+  document.getElementById('totalWordsLearned').textContent = state.totalCorrect;
+  document.getElementById('totalExercises').textContent = state.totalExercises;
+  
+  var totalWords = state.totalCorrect + state.totalWrong;
+  document.getElementById('accuracyRate').textContent = totalWords > 0 ? Math.round((state.totalCorrect / totalWords) * 100) + '%' : '0%';
+  
+  var pct = Math.min(100, (state.dailyCompleted / state.dailyGoal) * 100);
+  var circumference = 175.9;
+  document.getElementById('dailyRingProgress').style.strokeDashoffset = circumference - (circumference * pct / 100);
+  document.getElementById('dailyRingText').textContent = Math.min(state.dailyCompleted, state.dailyGoal) + '/' + state.dailyGoal;
+  document.getElementById('dailyProgressText').textContent = state.dailyCompleted >= state.dailyGoal ? 
+    '¡Meta completada! 🎉' : 'Practica ' + state.dailyGoal + ' palabras hoy';
+}
+
+function shuffleArray(arr) {
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+  }
+  return arr;
+}
+
+function showConfetti() {
+  var container = document.getElementById('confettiContainer');
+  container.innerHTML = '';
+  var colors = ['#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6', '#ec4899'];
+  
+  for (var i = 0; i < 50; i++) {
+    var piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.top = '-10px';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = Math.random() * 0.5 + 's';
+    piece.style.animationDuration = (0.5 + Math.random() * 1) + 's';
+    container.appendChild(piece);
+  }
+  
+  setTimeout(function() { container.innerHTML = ''; }, 2000);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
+```
